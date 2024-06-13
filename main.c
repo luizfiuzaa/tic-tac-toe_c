@@ -8,9 +8,9 @@ int print_line(){
 
 int menu_escolha_modo_jogo(){
     print_line();
-    printf("\t\t JOGO DA VEIA");
+    printf("\t\t JOGO DA VELHA");
     print_line();
-    printf("\t MODO DE JOGO");
+    printf(" MODO DE JOGO");
     print_line();
     printf(" 1 - Humano x Humano \n");
     printf(" 2 - Humano x Maquina \n");
@@ -27,6 +27,8 @@ int escolha_modo_jogo(){
     
     while(modo < 0 || modo > 3){
         print_line();
+        system("clear");
+        menu_escolha_modo_jogo();
         printf("ERRO: modo de jogo escolhido nao existe!");
         print_line();
         printf("SELECIONE UM MODO: ");
