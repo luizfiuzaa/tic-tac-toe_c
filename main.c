@@ -42,7 +42,7 @@ int escolha_menu()
     return modo;
 }
 
-int mostrar_matriz(int matriz[3][3])
+int mostrar_matriz(char matriz[3][3])
 {
     int var_linha, var_coluna;
 
@@ -51,8 +51,7 @@ int mostrar_matriz(int matriz[3][3])
         printf("\t");
         for (var_coluna = 0; var_coluna < 3; var_coluna++)
         {
-            printf("%i", matriz[var_linha][var_coluna]);
-            printf(" | ");
+            printf("[ %c ]", matriz[var_linha][var_coluna]);
         }
         printf("\n \n");
     }
@@ -64,10 +63,10 @@ int main()
 {
     int modo;
 
-    int matriz[3][3] = {
-        1, 2, 3,
-        4, 5, 6,
-        7, 8, 9,
+    char matriz[3][3] = {
+        {' ', ' ', ' '},
+        {' ', ' ', ' '},
+        {' ', ' ', ' '}
     };
 
     menu();
