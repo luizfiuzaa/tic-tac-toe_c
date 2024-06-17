@@ -17,7 +17,8 @@ int main()
     char matriz[3][3] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
-        {' ', ' ', ' '}};
+        {' ', ' ', ' '}
+    };
 
     menu();
     modo = escolha_modo();
