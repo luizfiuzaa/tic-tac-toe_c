@@ -6,9 +6,9 @@
 int menu();
 int print_linha();
 int escolha_modo();
-int mostrar_modo(int modo);
-int mostrar_matriz(char matriz[3][3], int modo);
-int humano_contra_humano(int rodadas, char matriz[3][3], int modo);
+int mostrar_modo();
+int mostrar_matriz();
+int humano_contra_humano();
 
 // MAIN
 int main()
@@ -38,8 +38,6 @@ int main()
             humano_contra_humano(rodadas, matriz, modo);
         }
     }
-    mostrar_modo(modo);
-    mostrar_matriz(matriz, modo);
 
     return 0;
 }
@@ -132,7 +130,7 @@ int humano_contra_humano(int rodadas, char matriz[3][3], int modo)
     int linha, coluna;
     while (rodadas < 9)
     {
-        if ((rodadas % 2) == 0)
+        do 
         {
             printf(" * JOGADOR 1 * \n SELECIONE A LINHA: ");
             scanf("%i", &linha);
@@ -150,8 +148,8 @@ int humano_contra_humano(int rodadas, char matriz[3][3], int modo)
             }
             matriz[linha][coluna] = 'X';
             mostrar_matriz(matriz, modo);
-        }
-        else
+        } while ((rodadas % 2) == 0);
+        do
         {
             printf(" * JOGADOR 2 * \n SELECIONE A LINHA: ");
             scanf("%i", &linha);
@@ -169,7 +167,7 @@ int humano_contra_humano(int rodadas, char matriz[3][3], int modo)
             }
             matriz[linha][coluna] = 'O';
             mostrar_matriz(matriz, modo);
-        }
+        } while ((rodadas % 2) != 0);
         rodadas++;
     }
 }
