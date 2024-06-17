@@ -18,8 +18,7 @@ int main()
     char matriz[3][3] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
-        {' ', ' ', ' '}
-    };
+        {' ', ' ', ' '}};
 
     menu();
     modo = escolha_modo();
@@ -173,8 +172,13 @@ int humano_contra_humano(int rodadas, char matriz[3][3], int modo)
     return 0;
 }
 
+/* TODO: fazer uma função para analizar se as marcações na matriz denunciam uma vitória
 int verifica_vitoria(char matriz[3][3]){
     int linha = 0, coluna = 0;
     
+    // horizontal cima
+    for()
+    
     return 0; 
 }
+*/
