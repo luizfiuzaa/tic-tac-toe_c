@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 // COMPONENTIZANDO FUNCOES
-
 int menu();
 int print_linha();
 int escolha_modo();
+int mostrar_modo(int modo);
 int mostrar_matriz(char matriz[3][3], int modo);
 int marcar_matriz(char matriz[3][3], int linha, int coluna, int rodadas, int modo);
 
@@ -30,10 +30,11 @@ int main()
         print_linha();
         
     }else{
-        system("clear");
+        mostrar_modo(modo);
         mostrar_matriz(matriz, modo);
     }
     marcar_matriz(matriz, linha, coluna, rodadas, modo);
+    mostrar_modo(modo);
     mostrar_matriz(matriz, modo);
     
 
@@ -70,32 +71,37 @@ int main()
             print_linha();
             system("clear");
             menu();
-            printf("ERRO: esta opcao nao existe! \n");
+            printf(" ERRO: esta opcao nao existe! \n");
             print_linha();
-            printf("SELECIONE UMA OPCAO: ");
+            printf(" SELECIONE UMA OPCAO: ");
             scanf("%i", &modo);
         }
         return modo;
+    }
+    
+    int mostrar_modo(int modo){
+        print_linha();
+        printf("\t\t TIC TAC TOE \n");
+        print_linha();
+        
+        if(modo == 1){
+        printf("\t\t");
+            printf("Humano x Humano \n");
+        }
+        if(modo == 2){
+        printf("\t\t");
+            printf("Humano x Computador \n");
+        }
+        if(modo == 3){
+        printf("\t");
+            printf(" Computador x Computador \n");
+        }
+        print_linha();
     }
 
     // MOSTRAR MATRIZ
     int mostrar_matriz(char matriz[3][3], int modo){
         int var_linha, var_coluna;
-        print_linha();
-        printf("\t\t TIC TAC TOE \n");
-        print_linha();
-        printf("\t\t");
-        
-        if(modo == 1){
-            printf("Humano x Humano \n");
-        }
-        if(modo == 2){
-            printf("Humano x Computador \n");
-        }
-        if(modo == 3){
-            printf("Computador x Computador \n");
-        }
-        print_linha();
         for (var_linha = 0; var_linha < 3; var_linha++){
             printf("\t\t");
             for (var_coluna = 0; var_coluna < 3; var_coluna++){
@@ -117,7 +123,7 @@ int main()
                     printf(" -- ERRO: linha nao existe na matriz! -- \n * JOGADOR 1 * \n SELECIONE A LINHA: ");
                     scanf("%i", &linha);
                 }
-                printf(" * JOGADOR 1 * \n  SELECIONE A COLUNA: ");
+                printf(" SELECIONE A COLUNA: ");
                 scanf("%i", &coluna);
                 while(coluna < 0 || coluna > 2){
                     printf(" -- ERRO: coluna nao existe na matriz! -- \n * JOGADOR 1 * \n SELECIONE A COLUNA: ");
