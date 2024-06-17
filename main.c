@@ -25,7 +25,7 @@ int main()
     modo = escolha_modo();
     if(modo == 0){
         print_linha();
-        printf("VOCE SAIU DO JOGO!");
+        printf(" VOCE SAIU DO JOGO!");
         return 0;
         print_linha();
         
@@ -52,12 +52,9 @@ int main()
         print_linha();
         printf("\t\t TIC TAC TOE \n");
         print_linha();
-        printf(" MODO DE JOGO \n");
+        printf(" SELECIONE UMA OPCAO \n");
         print_linha();
-        printf(" 1 - Humano x Humano \n");
-        printf(" 2 - Humano x Computador \n");
-        printf(" 3 - Computador x Computador \n");
-        printf(" 0 - Sair \n");
+        printf(" 1 - Humano x Humano \n 2 - Humano x Computador \n 3 - Computador x Computador \n 0 - Sair \n");
         print_linha();
         return 0;
     }
@@ -65,7 +62,7 @@ int main()
     // ESCOLHA MODO
     int escolha_modo(){
         int modo;
-        printf("SELECIONE UM MODO: ");
+        printf("SELECIONE UMA OPCAO: ");
         scanf("%i", &modo);
         
         while (modo < 0 || modo > 3)
@@ -73,9 +70,9 @@ int main()
             print_linha();
             system("clear");
             menu();
-            printf("ERRO: modo de jogo escolhido nao existe! \n");
+            printf("ERRO: esta opcao nao existe! \n");
             print_linha();
-            printf("SELECIONE UM MODO: ");
+            printf("SELECIONE UMA OPCAO: ");
             scanf("%i", &modo);
         }
         return modo;
@@ -114,12 +111,18 @@ int main()
         switch(modo){
         case 1:
             if((rodadas % 2) == 0){
-                printf("JOGADOR 1 \n");
-                printf("SELECIONE A LINHA:  \n");
+                printf(" * JOGADOR 1 * \n SELECIONE A LINHA: ");
                 scanf("%i", &linha);
-                printf("SELECIONE A COLUNA:  \n");
+                while(linha < 0 || linha > 2){
+                    printf(" -- ERRO: linha nao existe na matriz! -- \n * JOGADOR 1 * \n SELECIONE A LINHA: ");
+                    scanf("%i", &linha);
+                }
+                printf(" * JOGADOR 1 * \n  SELECIONE A COLUNA: ");
                 scanf("%i", &coluna);
-                
+                while(coluna < 0 || coluna > 2){
+                    printf(" -- ERRO: coluna nao existe na matriz! -- \n * JOGADOR 1 * \n SELECIONE A COLUNA: ");
+                    scanf("%i", &coluna);
+                }
                 matriz[linha][coluna] = 'X';
                 
             }
