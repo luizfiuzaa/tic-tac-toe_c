@@ -10,11 +10,13 @@ int mostrar_modo();
 int mostrar_matriz();
 int humano_contra_humano();
 int verifica_vitoria();
+int verifica_rodada_jogador();
+int verifica_rodada();
 
 // MAIN
 int main()
 {
-    int rodadas = 0, linha, coluna, modo;
+    int rodadas = 1, linha, coluna, modo;
     char matriz[3][3] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
@@ -125,51 +127,49 @@ int mostra_rodada(int rodadas){
     return 0;
 }
 int verifica_rodada_jogador(int rodadas){
-    int jogador;
-    if ((rodadas % 2) == 0){
-        int jogador = 1;
+    if ((rodadas % 2) != 0){
         mostra_rodada(rodadas);
-        printf(" * JOGADOR 1: * \n");
-    }else if((rodadas % 2) != 0){
-        int jogador = 2;
+        printf(" * JOGADOR 1 * \n");
+    }else if((rodadas % 2) == 0){
         mostra_rodada(rodadas);
-        printf(" * JOGADOR 2: * \n");
+        printf(" * JOGADOR 2 * \n");
     }
-    return jogador;
 }
 
 int humano_contra_humano(int rodadas, char matriz[3][3], int modo){
     int linha, coluna;
     
-    while (rodadas < 9){
+    while (rodadas < 10){
+        verifica_rodada_jogador(rodadas);
+        printf(" SELECIONE A LINHA: ");
+        scanf("%i", &linha);
+        printf(" SELECIONE A COLUNA: ");
+        scanf("%i", &coluna);
+        while ((linha < 0 || linha > 2)  && (coluna < 0 || coluna > 2)){
+            mostrar_matriz(matriz, modo);
             verifica_rodada_jogador(rodadas);
-            printf(" SELECIONE A LINHA: ");
+            printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n SELECIONE A LINHA: ");
             scanf("%i", &linha);
             printf(" SELECIONE A COLUNA: ");
             scanf("%i", &coluna);
-            while ((linha < 0 || linha > 2)  && (coluna < 0 || coluna > 2)){
-                mostrar_matriz(matriz, modo);
-                verifica_rodada_jogador(rodadas);
-                printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n SELECIONE A LINHA: ");
-                scanf("%i", &linha);
-                printf(" SELECIONE A COLUNA: ");
-                scanf("%i", &coluna);
-            }
-            
-            while(matriz[linha][coluna] == 'X' || matriz[linha][coluna] == 'O'){
-                mostrar_matriz(matriz, modo);
-                printf(" -- ERRO: nao e possivel sobrepor uma jogada! -- \n");
-                humano_contra_humano(rodadas, matriz, modo);
-            }
-            
-            if ((rodadas % 2) == 0){
-                matriz[linha][coluna] = 'X';
-            }else if((rodadas % 2) != 0){
-                matriz[linha][coluna] = 'O';
-            }
-            
-            mostrar_matriz(matriz, modo);
-            rodadas++;
         }
-    return 0;
+            
+        if(matriz[linha][coluna] == 'X' || matriz[linha][coluna] == 'O'){
+            mostrar_matriz(matriz, modo);
+            printf(" -- ERRO: nao e possivel sobrepor uma jogada! -- \n");
+            humano_contra_humano(rodadas, matriz, modo);
+        }
+            
+        if ((rodadas % 2) != 0){
+            matriz[linha][coluna] = 'X';
+        }else if((rodadas % 2) == 0){
+            matriz[linha][coluna] = 'O';
+        }
+            
+        mostrar_matriz(matriz, modo);
+            rodadas++;
+            if (rodadas > 9){
+                return 0;
+            }
+        }
 }
