@@ -128,6 +128,11 @@ int verifica_turno(int rodadas){
     }
 }
 
+int verifica_vitoria(int tabela[3][3]){
+    int sequencia = 0;
+    
+}
+
 int jogo(int rodadas, char tabela[3][3], int modo){
     int linha, coluna, vitoria;
     
