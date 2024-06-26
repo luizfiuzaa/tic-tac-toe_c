@@ -40,8 +40,15 @@ int main(){
         case 1:
             system("clear");
             humano_contra_humano(rodadas, tabela, modo);
-        case 2: break;
-        case 3: break;
+            return 0;
+        case 2: 
+            system("clear");
+            humano_contra_maquina(rodadas, tabela, modo);
+            return 0;
+        case 3:
+            system("clear");
+            maquina_contra_maquina(rodadas, tabela, modo);
+            return 0;
         case 0:
             system("clear");
             menu();
@@ -49,7 +56,6 @@ int main(){
             print_linha();
             return 0;
         }
-        return 0;
     }
 
 // FUNCOES COMPONENTIZADAS
@@ -140,8 +146,11 @@ int fim_jogo(int rodadas){
     return 0;
 }
 
-int verificar_vitoria(char tabela[3][3]){
-    
+int verificar_vitoria(char tabela[3][3], int jogador){
+    int vitoria, linha, coluna, sequencia;
+    for(coluna = 0; coluna < 2; coluna++){
+        
+    }
 }
 
 int verificar_rodada_jogador(int rodadas){
@@ -166,7 +175,7 @@ int marcar_tabela(int jogador, char tabela[3][3], int linha, int coluna){
 
 int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
     int linha, coluna, jogador, vitoria;
-    while (rodadas < 10 || vitoria < 0){
+    while (rodadas < 10 || vitoria == 0){
         jogador = verificar_rodada_jogador(rodadas);
         header();
         mostrar_tabela(tabela, modo);
@@ -176,9 +185,9 @@ int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
         scanf("%i", &linha);
         printf(" SELECIONE A COLUNA: ");
         scanf("%i", &coluna);
-        if ((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
+        while(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
             mostrar_tabela(tabela, modo);
-            printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n");
+            printf(" -- ERRO: nao e possivel sobrepor uma marcacao! -- \n");
             mostrar_rodada(rodadas);
             printf(" * JOGADOR %i * \n", jogador);
             printf(" SELECIONE A LINHA: ");
@@ -186,9 +195,9 @@ int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
             printf(" SELECIONE A COLUNA: ");
             scanf("%i", &coluna);
         }
-        if(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
+        while ((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
             mostrar_tabela(tabela, modo);
-            printf(" -- ERRO: nao e possivel sobrepor uma marcacao! -- \n");
+            printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n");
             mostrar_rodada(rodadas);
             printf(" * JOGADOR %i * \n", jogador);
             printf(" SELECIONE A LINHA: ");
@@ -203,4 +212,62 @@ int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
             return 0;
         }
     }
+}
+
+int humano_contra_maquina(int rodadas, char tabela[3][3], int modo){
+    int linha, coluna, jogador, vitoria;
+    while(rodadas < 10 || vitoria == 0){
+        jogador = verificar_rodada_jogador(rodadas);
+        header();
+        mostrar_tabela(tabela, modo);
+        mostrar_rodada(rodadas);
+        if(jogador == 2){
+            linha = randomizador();
+            coluna = randomizador();
+            while(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
+                linha = randomizador();
+                coluna = randomizador();
+            }
+            while((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
+                linha = randomizador();
+                coluna = randomizador();
+            }
+            
+            marcar_tabela(jogador, tabela, linha, coluna);
+        }
+        else if(jogador == 1){
+            printf(" * JOGADOR %i * \n", jogador);
+            printf(" SELECIONE A LINHA: ");
+            scanf("%i", &linha);
+            printf(" SELECIONE A COLUNA: ");
+            scanf("%i", &coluna);
+            while(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
+                mostrar_tabela(tabela, modo);
+                printf(" -- ERRO: nao e possivel sobrepor uma marcacao! -- \n");
+                mostrar_rodada(rodadas);
+                printf(" * JOGADOR %i * \n", jogador);
+                printf(" SELECIONE A LINHA: ");
+                scanf("%i", &linha);
+                printf(" SELECIONE A COLUNA: ");
+                scanf("%i", &coluna);
+            }
+            while ((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
+                mostrar_tabela(tabela, modo);
+                printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n");
+                mostrar_rodada(rodadas);
+                printf(" * JOGADOR %i * \n", jogador);
+                printf(" SELECIONE A LINHA: ");
+                scanf("%i", &linha);
+                printf(" SELECIONE A COLUNA: ");
+                scanf("%i", &coluna);
+            }
+            marcar_tabela(jogador, tabela, linha, coluna);
+        }
+        rodadas++;
+        if(rodadas > 9){
+            fim_jogo(rodadas);
+            return 0;
+        }
+    }
+    
 }
