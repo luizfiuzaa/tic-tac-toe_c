@@ -1,40 +1,51 @@
 // INCLUIDO BIBLIOTECAS
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // COMPONENTIZANDO FUNCOES
 int menu();
 int header();
-int fim_jogo();
 int print_linha();
-int escolha_modo();
+int fim_jogo();
+
 int mostrar_modo();
-int mostra_rodada();
-int mostrar_matriz();
+int mostrar_tabela();
+int mostrar_rodada();
+
+int verificar_vitoria();
+int verificar_rodada_jogador();
+
+int escolher_modo();
+
 int humano_contra_humano();
-int verifica_rodada_jogador();
+int humano_contra_maquina();
+int maquina_contra_maquina();
+
+int randomizador();
 
 // MAIN
 int main(){
     int rodadas = 1, linha, coluna, modo;
-    char matriz[3][3] = {
+    char tabela[3][3] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
         {' ', ' ', ' '}
     };
     menu();
-    modo = escolha_modo();
+    modo = escolher_modo();
 
-    mostrar_matriz(matriz, modo);
+    mostrar_tabela(tabela, modo);
     switch (modo){
         case 1:
             system("clear");
-            humano_contra_humano(rodadas, matriz, modo);
+            humano_contra_humano(rodadas, tabela, modo);
         case 2: break;
         case 3: break;
         case 0:
-            print_linha();
-            printf(" VOCE SAIU DO JOGO!");
+            system("clear");
+            menu();
+            printf(" VOCE SAIU DO JOGO! \n");
             print_linha();
             return 0;
         }
@@ -66,8 +77,12 @@ int menu(){
     return 0;
 }
 
+int randomizador() {
+    return rand()%3;
+}
+
 // ESCOLHA MODO
-int escolha_modo(){
+int escolher_modo(){
     int modo;
     printf("SELECIONE UMA OPCAO: ");
     scanf("%i", &modo);
@@ -99,8 +114,8 @@ int mostrar_modo(int modo){
     return 0;
 }
 
-// MOSTRAR MATRIZ
-int mostrar_matriz(char matriz[3][3], int modo){
+// MOSTRAR tabela
+int mostrar_tabela(char tabela[3][3], int modo){
     int linha, coluna;
     mostrar_modo(modo);
     for (linha = 0; linha < 3; linha++)
@@ -108,62 +123,75 @@ int mostrar_matriz(char matriz[3][3], int modo){
         printf("\t\t");
         for (coluna = 0; coluna < 3; coluna++)
         {
-            printf("[ %c ]", matriz[linha][coluna]);
+            printf("[ %c ]", tabela[linha][coluna]);
         }
         printf("\n \n");
     }
     return 0;
 }
 
-int mostra_rodada(int rodadas){
+int mostrar_rodada(int rodadas){
     printf("\n == RODADA: %i == \n", rodadas);
     return 0;
 }
 
 int fim_jogo(int rodadas){
-    if(rodadas == 10){
+    if(rodadas == 9){
         printf(" -- FIM DE JOGO! -- \n");
     }
     return 0;
 }
 
-int verifica_rodada_jogador(int rodadas){
+int verificar_vitoria(char tabela[3][3]){
+    
+}
+
+int verificar_rodada_jogador(int rodadas){
+    int jogador;
     if ((rodadas % 2) != 0){
-        mostra_rodada(rodadas);
-        printf(" * JOGADOR 1 * \n");
-    }else if((rodadas % 2) == 0){
-        mostra_rodada(rodadas);
-        printf(" * JOGADOR 2 * \n");
+        jogador = 1;
+        return jogador;
+    }else{
+        jogador = 2;
+        return jogador;
     }
 }
 
-int humano_contra_humano(int rodadas, char matriz[3][3], int modo){
-    int linha, coluna;
-    while (rodadas < 10){
+int marcar_tabela(int jogador, char tabela[3][3], int linha, int coluna){
+    if (jogador == 2){
+        tabela[linha][coluna] = 'O';
+    }else{
+        tabela[linha][coluna] = 'X';
+    }
+    return 0;
+}
+
+int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
+    int linha, coluna, jogador, vitoria;
+    while (rodadas < 10 || vitoria < 0){
+        jogador = verificar_rodada_jogador(rodadas);
         header();
-        mostrar_matriz(matriz, modo);
-        verifica_rodada_jogador(rodadas);
+        mostrar_tabela(tabela, modo);
+        mostrar_rodada(rodadas);
+        printf(" * JOGADOR %i * \n", jogador);
         printf(" SELECIONE A LINHA: ");
         scanf("%i", &linha);
         printf(" SELECIONE A COLUNA: ");
-        scanf("%i", &coluna);
+        scanf("%i", &coluna);   
         if ((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
-            mostrar_matriz(matriz, modo);
-            verifica_rodada_jogador(rodadas);
+            mostrar_tabela(tabela, modo);
+            mostrar_rodada(rodadas);
+            printf(" * JOGADOR %i * \n", jogador);
             printf(" -- ERRO: nao e possivel marcar fora da tabela! -- \n");
-            humano_contra_humano(rodadas, matriz, modo);
+            humano_contra_humano(rodadas, tabela, modo);
         }
-        if(matriz[linha][coluna] == 'X' || matriz[linha][coluna] == 'O'){
-            mostrar_matriz(matriz, modo);
-            printf(" -- ERRO: nao e possivel sobrepor uma jogada! -- \n");
-            humano_contra_humano(rodadas, matriz, modo);
+        if(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
+            mostrar_tabela(tabela, modo);
+            printf(" -- ERRO: nao e possivel sobrepor uma marcacao! -- \n");
+            humano_contra_humano(rodadas, tabela, modo);
         }
-        if ((rodadas % 2) == 0){
-            matriz[linha][coluna] = 'O';
-        }else{
-            matriz[linha][coluna] = 'X';
-        }
+        marcar_tabela(jogador, tabela, linha, coluna);
+        fim_jogo(rodadas);
         rodadas++;
     }
-    fim_jogo(rodadas);
 }
