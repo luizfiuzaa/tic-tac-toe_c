@@ -124,11 +124,9 @@ int mostrar_modo(int modo){
 int mostrar_tabela(char tabela[3][3], int modo){
     int linha, coluna;
     mostrar_modo(modo);
-    for (linha = 0; linha < 3; linha++)
-    {
+    for (linha = 0; linha < 3; linha++){
         printf("\t\t");
-        for (coluna = 0; coluna < 3; coluna++)
-        {
+        for (coluna = 0; coluna < 3; coluna++){
             printf("[ %c ]", tabela[linha][coluna]);
         }
         printf("\n \n");
@@ -146,11 +144,24 @@ int fim_jogo(int rodadas){
     return 0;
 }
 
-int verificar_vitoria(char tabela[3][3], int jogador){
-    int vitoria, linha, coluna, sequencia;
-    for(coluna = 0; coluna < 2; coluna++){
-        
+int verificar_vitoria(char tabela[3][3], int jogador) {
+    for (int i = 0; i < 3; i++) {
+        if (tabela[i][0] == tabela[i][1] && tabela[i][1] == tabela[i][2] && tabela[i][0]!= ' ') {
+            return jogador;
+        }
     }
+    for (int i = 0; i < 3; i++) {
+        if (tabela[0][i] == tabela[1][i] && tabela[1][i] == tabela[2][i] && tabela[0][i]!= ' ') {
+            return jogador;
+        }
+    }
+    if (tabela[0][0] == tabela[1][1] && tabela[1][1] == tabela[2][2] && tabela[0][0]!= ' ') {
+        return jogador;
+    }
+    if (tabela[0][2] == tabela[1][1] && tabela[1][1] == tabela[2][0] && tabela[0][2]!= ' ') {
+        return jogador;
+    }
+    return 0;
 }
 
 int verificar_rodada_jogador(int rodadas){
@@ -175,7 +186,7 @@ int marcar_tabela(int jogador, char tabela[3][3], int linha, int coluna){
 
 int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
     int linha, coluna, jogador, vitoria;
-    while (rodadas < 10 || vitoria == 0){
+    while (rodadas < 10){
         jogador = verificar_rodada_jogador(rodadas);
         header();
         mostrar_tabela(tabela, modo);
@@ -206,21 +217,31 @@ int humano_contra_humano(int rodadas, char tabela[3][3], int modo){
             scanf("%i", &coluna);
         }
         marcar_tabela(jogador, tabela, linha, coluna);
-        rodadas++;
-        if(rodadas > 9){
-            fim_jogo(rodadas);
+        marcar_tabela(jogador, tabela, linha, coluna);
+        vitoria = verificar_vitoria(tabela, jogador);
+        
+        if (vitoria!= 0) {
+            header();
+            mostrar_tabela(tabela, modo);
+            mostrar_rodada(rodadas);
+            printf("\n -- FIM DE JOGO -- \n");
+            printf("JOGADOR %i GANHOU!\n", vitoria);
             return 0;
+        }else if(rodadas == 10){
+            printf("\n -- FIM DE JOGO -- \n EMPATE");
         }
+        rodadas++;
     }
 }
 
 int humano_contra_maquina(int rodadas, char tabela[3][3], int modo){
     int linha, coluna, jogador, vitoria;
-    while(rodadas < 10 || vitoria == 0){
+    while(rodadas < 10){
         jogador = verificar_rodada_jogador(rodadas);
         header();
         mostrar_tabela(tabela, modo);
         mostrar_rodada(rodadas);
+        printf(" * JOGADOR %i * \n", jogador);
         if(jogador == 2){
             linha = randomizador();
             coluna = randomizador();
@@ -232,7 +253,6 @@ int humano_contra_maquina(int rodadas, char tabela[3][3], int modo){
                 linha = randomizador();
                 coluna = randomizador();
             }
-            
             marcar_tabela(jogador, tabela, linha, coluna);
         }
         else if(jogador == 1){
@@ -264,10 +284,56 @@ int humano_contra_maquina(int rodadas, char tabela[3][3], int modo){
             marcar_tabela(jogador, tabela, linha, coluna);
         }
         rodadas++;
-        if(rodadas > 9){
-            fim_jogo(rodadas);
+        marcar_tabela(jogador, tabela, linha, coluna);
+        vitoria = verificar_vitoria(tabela, jogador);
+        
+        if (vitoria!= 0) {
+            header();
+            mostrar_tabela(tabela, modo);
+            mostrar_rodada(rodadas);
+            printf("\n -- FIM DE JOGO -- \n");
+            printf("JOGADOR %i GANHOU!\n", vitoria);
             return 0;
+        }else if(rodadas == 10){
+            printf("\n -- FIM DE JOGO -- \n EMPATE");
         }
     }
-    
+}
+
+int maquina_contra_maquina(int rodadas, char tabela[3][3], int modo){
+    int linha, coluna, jogador, vitoria;
+    while(rodadas < 10){
+        jogador = verificar_rodada_jogador(rodadas);
+        header();
+        mostrar_tabela(tabela, modo);
+        mostrar_rodada(rodadas);
+        printf(" * JOGADOR %i * \n", jogador);
+        
+        linha = randomizador();
+        coluna = randomizador();
+        while(tabela[linha][coluna] == 'X' || tabela[linha][coluna] == 'O'){
+            linha = randomizador();
+            coluna = randomizador();
+        }
+        while((linha < 0 || linha > 2) && (coluna < 0 || coluna > 2)){
+            linha = randomizador();
+            coluna = randomizador();
+        }
+            
+        marcar_tabela(jogador, tabela, linha, coluna);
+        rodadas++;
+        marcar_tabela(jogador, tabela, linha, coluna);
+        vitoria = verificar_vitoria(tabela, jogador);
+        
+        if (vitoria != 0) {
+            header();
+            mostrar_tabela(tabela, modo);
+            mostrar_rodada(rodadas);
+            printf("\n -- FIM DE JOGO -- \n");
+            printf("JOGADOR %i GANHOU!\n", vitoria);
+            return 0;
+        }else if(rodadas == 10){
+            printf("\n -- FIM DE JOGO -- \n EMPATE");
+        }
+    }
 }
